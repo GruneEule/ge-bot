@@ -1,0 +1,33 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// Dieses Modell speichert die Basiskonfiguration für jeden Discord-Server
+model GuildConfig {
+  // Die ID des Discord-Servers (Guild). Dies ist der Primärschlüssel.
+  id String @id @db.VarChar(30)
+
+  // Die ID des Kanals für die Logging-Funktion
+  logChannelId String? @db.VarChar(30) // Kann Null sein (Konfiguration noch nicht gesetzt)
+
+  // Die ID der AutoRole, die neue Mitglieder erhalten
+  autoRoleId String? @db.VarChar(30)
+
+  // Das Warnlimit, ab dem ein Ban erfolgt
+  warnLimit Int @default(3)
+
+  // Optional: Speichert das Datum, wann der Eintrag zuletzt aktualisiert wurde
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+}
